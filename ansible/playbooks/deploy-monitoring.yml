@@ -1,0 +1,37 @@
+---
+# Playbook to deploy monitoring stack with Loki, Promtail, Prometheus, and Grafana
+
+- name: Deploy Monitoring Stack
+  hosts: localhost
+  become: false
+  gather_facts: true
+
+  roles:
+    - monitoring
+
+  post_tasks:
+    - name: Display access information
+      ansible.builtin.debug:
+        msg: |
+          ========================================
+          Monitoring Stack Deployed Successfully!
+          ========================================
+          
+          Grafana UI: http://localhost:{{ grafana_port }}
+          Username: admin
+          Password: {{ grafana_admin_password }}
+          
+          Prometheus UI: http://localhost:{{ prometheus_port }}
+          Targets: http://localhost:{{ prometheus_port }}/targets
+          
+          Loki API: http://localhost:{{ loki_port }}
+          
+          Next Steps:
+          1. Open Grafana in your browser
+          2. Add data sources:
+             - Loki: http://loki:{{ loki_port }}
+             - Prometheus: http://prometheus:{{ prometheus_port }}
+          3. Explore logs and metrics
+          4. Create dashboards for your applications
+          
+          ========================================

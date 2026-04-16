@@ -1,0 +1,25 @@
+---
+# Common role - Default variables
+
+common_packages:
+  - python3-pip
+  - curl
+  - git
+  - vim
+  - htop
+  - wget
+  - unzip
+  - software-properties-common
+  - apt-transport-https
+  - ca-certificates
+  - gnupg
+  - lsb-release
+
+timezone: "UTC"
+
+# User management
+deploy_user: "deploy"
+deploy_user_groups:
+  - sudo
+deploy_user_shell: "/bin/bash"
+create_deploy_user: false  # Set to true to create deployment user

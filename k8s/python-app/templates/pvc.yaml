@@ -1,0 +1,23 @@
+{{/*
+  Standalone PVC — only rendered when persistence is enabled AND StatefulSet
+  is NOT enabled. When statefulset.enabled=true, each pod gets its own PVC
+  automatically via volumeClaimTemplates in statefulset.yaml, so a shared
+  standalone PVC would conflict and is not needed.
+*/}}
+{{- if and .Values.persistence.enabled (not .Values.statefulset.enabled) }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "python-app.fullname" . }}-data
+  labels:
+    {{- include "python-app.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.persistence.size }}
+  {{- if .Values.persistence.storageClass }}
+  storageClassName: {{ .Values.persistence.storageClass }}
+  {{- end }}
+{{- end }}
